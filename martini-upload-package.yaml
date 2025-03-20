@@ -14,14 +14,11 @@ phases:
   pre_build:
     commands:
       # Fetch parameters from Parameter Store
-      - PARAMETER=$(aws ssm get-parameter --name "${PARAMETER_NAME}" --with-decryption --query "Parameter.Value" --output text)
-      - BASE_URL=$(echo $PARAMETER | jq -r '.BASE_URL')
-      - MARTINI_USER_NAME=$(echo $PARAMETER | jq -r '.MARTINI_USER_NAME')
-      - MARTINI_USER_PASSWORD=$(echo $PARAMETER | jq -r '.MARTINI_USER_PASSWORD')
-
-      # Fetch client_id and client_secret from Parameter Store, or use default values if not found
-      - CLIENT_ID=$(echo $PARAMETER | jq -r '.CLIENT_ID // env.CLIENT_ID')
-      - CLIENT_SECRET=$(echo $PARAMETER | jq -r '.CLIENT_SECRET // env.CLIENT_SECRET')
+      - BASE_URL=$(aws ssm get-parameter --name "/dev/martini-upload-package/base_url" --with-decryption --query "Parameter.Value" --output text)
+      - MARTINI_USER_NAME=$(aws ssm get-parameter --name "/dev/martini-upload-package/martini_user_name" --with-decryption --query "Parameter.Value" --output text)
+      - MARTINI_USER_PASSWORD=$(aws ssm get-parameter --name "/dev/martini-upload-package/martini_user_password" --with-decryption --query "Parameter.Value" --output text)
+      - CLIENT_ID=$(aws ssm get-parameter --name "/dev/martini-upload-package/client_id" --with-decryption --query "Parameter.Value" --output text)
+      - CLIENT_SECRET=$(aws ssm get-parameter --name "/dev/martini-upload-package/client_secret" --with-decryption --query "Parameter.Value" --output text)
 
       # Fetch OAuth token
       - echo "Fetching the OAuth token..."
