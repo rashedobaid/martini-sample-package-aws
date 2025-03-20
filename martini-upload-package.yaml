@@ -4,7 +4,6 @@ env:
   variables:
     # Default values for client_id and client_secret
     CLIENT_ID: "TOROMartini"
-    CLIENT_SECRET: "TOROMartini"
 
 phases:
   install:
